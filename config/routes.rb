@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resource :admin, only: [ :show ], controller: :admin
   resources :admins, only: [ :index ]
   resources :users, only: [ :index ]
+  devise_for :users, controllers: { sessions: "users/sessions" }
   resources :users do
     get :orders, on: :member  # GET /users/:id/orders
   end
