@@ -1,22 +1,30 @@
 Rails.application.routes.draw do
+  get "carts/show"
+  get "carts/add_product"
+  get "carts/remove_product"
+  get "carts/checkout"
   devise_for :admins
-  devise_for :users
-  resources :products, only: [:index, :show, :create, :update, :destroy]
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
+  resources :products, only: [ :index, :show, :create, :update, :destroy ]
   resource :admin, only: [ :show ], controller: :admin
   resources :admins, only: [ :index ]
   resources :users, only: [ :index ]
-  devise_for :users, controllers: { sessions: "users/sessions" }
+
   resources :users do
     get :orders, on: :member  # GET /users/:id/orders
   end
 
+  # 💡 ADD THIS BLOCK for cart functionality
+  resource :cart, only: [ :show ] do
+    post "add_product", to: "carts#add_product"
+    delete "remove_product", to: "carts#remove_product"
+    post "checkout", to: "carts#checkout"
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
   root "products#index"
 end
+

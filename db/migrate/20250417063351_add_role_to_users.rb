@@ -3,4 +3,3 @@ class ChangeDefaultRoleForUsers < ActiveRecord::Migration[7.1]
     change_column_default :users, :role, "user"
   end
 end
-
