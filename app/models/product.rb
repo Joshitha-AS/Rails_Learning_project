@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  validates :name, presence: true
+  validates :price, numericality: { greater_than_or_equal_to: 0 }
+
   has_rich_text :description
   has_many_attached :imags
   
